@@ -4,17 +4,13 @@ function initMap() {
     zoom: 6,
     center: uluru
   });
-  var marker = new google.maps.Marker({
-    position: uluru,
-    map: map
-  });
-
   loadGeoJson(map);
 }
 
 function loadGeoJson(map){
   var caLayer = new google.maps.Data();
-  caLayer.loadGeoJson('https://raw.githubusercontent.com/flyingsiying/gis/master/data/ca-counties.json');
+  // caLayer.loadGeoJson('https://raw.githubusercontent.com/flyingsiying/gis/master/data/ca-counties.json');
+  caLayer.loadGeoJson('https://bubinga.co/wp-content/uploads/jsonstates.min_.js');
   caLayer.setStyle({
     fillColor: 'Orange',
     strokeWeight: 2
