@@ -1,7 +1,7 @@
 function initMap() {
-  var uluru = {lat: 40, lng: -120};
+  var uluru = {lat: 38, lng: -120};
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 4,
+    zoom: 6,
     center: uluru
   });
   var marker = new google.maps.Marker({
@@ -9,5 +9,22 @@ function initMap() {
     map: map
   });
 
-  map.data.loadGeoJson('ca-counties.json');
+  loadGeoJson(map);
+}
+
+function loadGeoJson(map){
+  var caLayer = new google.maps.Data();
+  caLayer.loadGeoJson('https://raw.githubusercontent.com/flyingsiying/gis/master/data/ca-counties.json');
+  caLayer.setStyle({
+    fillColor: 'Orange',
+    strokeWeight: 2
+  });
+  caLayer.addListener('mouseover', function(event){
+    caLayer.overrideStyle(event.feature, {strokeWeight: 4});
+  });
+  caLayer.addListener('mouseout', function(event){
+    caLayer.revertStyle();
+  });
+  caLayer.setMap(map);
+
 }
