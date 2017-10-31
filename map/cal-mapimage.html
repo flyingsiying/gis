@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+<title>KML</title>
+<link rel="stylesheet" href="https://js.arcgis.com/3.22/dijit/themes/tundra/tundra.css">
+<link rel="stylesheet" href="https://js.arcgis.com/3.22/esri/css/esri.css">
+<style>
+  html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+  #map { height: 100%; margin: 0; padding: 0; }
+  #meta {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 300px;
+    height: 50px;
+    z-index: 40;
+    background: #fff;
+    color: #777;
+    padding: 5px;
+    border: 2px solid #666;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-family: arial;
+    font-size: 0.9em;
+  }
+  #meta h3 {
+    color: #666;
+    font-size: 1.1em;
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+  }
+  #loading {
+    float: right;
+  }
+</style>
+
+<script src="https://js.arcgis.com/3.22/"></script>
+<script>
+  var map;
+  require([
+    "esri/map",
+    "esri/layers/MapImage",
+    "esri/layers/MapImageLayer",
+    "dojo/parser",
+    "dojo/dom-style",
+
+    "dijit/layout/BorderContainer",
+    "dijit/layout/ContentPane",
+    "dojo/domReady!"
+  ], function(
+    Map,
+    MapImage,
+    MapImageLayer,
+    parser,
+    domStyle
+  ) {
+    var map = new Map("map", {
+      basemap: "topo",
+      center: [-122.258583, 37.872001],
+      zoom: 16
+    });
+
+    parser.parse();
+
+    var mapImage = new MapImage({
+      'extent':{
+        'xmin': -13610633.1161619,
+        'ymin': 4560772.13593435,
+        'xmax': -13608741.9161619,
+        'ymax': 4561859.33593435,
+        'spatialReference': {'wkid': 3857}
+      },
+      'href': 'https://github.com/flyingsiying/gis/raw/master/data/Cal1.png'
+    });
+
+
+    var mapImageLayer = new MapImageLayer();
+    mapImageLayer.addImage(mapImage);
+    map.addLayer(mapImageLayer);
+  });
+</script>
+</head>
+
+<body class="tundra">
+<div data-dojo-type="dijit/layout/BorderContainer"
+     data-dojo-props="design:'headline',gutters:false"
+     style="width: 100%; height: 100%; margin: 0;">
+  <div id="map"
+       data-dojo-type="dijit/layout/ContentPane"
+       data-dojo-props="region:'center'">
+    <div id="meta">
+      <!-- <span id="loading"><img src="images/loading_black.gif" /></span> -->
+      <h3>Display KML Using a <a href="https://developers.arcgis.com/javascript/3/jsapi/mapimagelayer-amd.html">MapImageLayer</a></h3>
+      <br />
+      The map displays the aerial image of the main campus of Cal using KML GroundOverlay.
+    </div>
+  </div>
+</div>
+</body>
+</html>
