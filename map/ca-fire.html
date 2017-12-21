@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>CA Fire Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        .marker {
+          background-image: url('fire.gif');
+          background-size: cover;
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+        #box {
+          position: absolute;
+          right: 20px;
+          top: 20px;
+          width: 20em;
+          height: auto;
+          z-index: 40;
+          background: #ffffff;
+          color: #777777;
+          padding: 5px;
+          border: 2px solid #666666;
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
+          font-family: arial;
+          font-size: 1em;
+          overflow-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'>
+  <div id='box'>Hover on the fire locations to see more details</div>
+</div>
+
+<script src="fire-geojson.js"></script>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmx5aW5nc2l5aW5nIiwiYSI6ImNqM25oMmV4YTAwMWIzMnF0Z2owdjd4b3QifQ.Ms5WS32cgwUCYDrHLw0k8g';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
+    center: [-122, 38], // starting position [lng, lat]
+    zoom: 5 // starting zoom
+});
+
+geojson.features.forEach(function(marker) {
+  if(marker.type == "Feature" && marker.geometry.type == "Point"){
+    // create a HTML element for each feature
+    var el = document.createElement('div');
+    el.className = 'marker';
+
+    // make a marker for each feature and add to the map
+    new mapboxgl.Marker(el)
+    .setLngLat(marker.geometry.coordinates)
+    .addTo(map);
+
+    el.addEventListener("mouseover", function(){
+      var box = document.getElementById("box");
+      box.innerHTML = "";
+      box.append(
+        "Name: " + marker.properties.name + "\n" +
+        "Description: " + marker.properties.description
+      );
+    });
+
+  }
+
+});
+
+// $(".marker").mouseover(function(){
+//   $("#box").html()
+// });
+</script>
+
+</body>
+</html>
